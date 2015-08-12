@@ -12,13 +12,13 @@ public class MyLocationService {
     public static void initLocationService(){
         LocationClient mLocationClient = ApplicationContext.getLocationClient();
 
-        //设置定位监听
+        //鍒濆鍖栧畾浣嶇洃鍚櫒
         MyLocationListener locationListener = new MyLocationListener();
         mLocationClient.registerLocationListener(locationListener);
 
-        //开启定位任务
+        //鍚姩瀹氭椂浠诲姟
         MyLocationTask locationTask = new MyLocationTask(mLocationClient);
         Timer timer = new Timer();
-        timer.schedule(locationTask, 1000);
+        timer.schedule(locationTask, 10000);
     }
 }
