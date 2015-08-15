@@ -31,11 +31,11 @@ import java.util.zip.GZIPOutputStream;
  * Created by me on 2015/8/14.
  */
 @SuppressWarnings("deprecation")
-public class HttpClientService {
+public class HttpRequestService {
     // Client–≠“È
     private ProtocalWrap protocal;
 
-    public HttpClientService(ProtocalWrap protocal) {
+    public HttpRequestService(ProtocalWrap protocal) {
         this.protocal = protocal;
     }
 

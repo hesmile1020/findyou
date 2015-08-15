@@ -12,11 +12,17 @@ public class MyLocationService {
     public static void initLocationService(){
         LocationClient mLocationClient = ApplicationContext.getLocationClient();
 
-        //初始化定位监听器
-        MyLocationListener locationListener = new MyLocationListener();
-        mLocationClient.registerLocationListener(locationListener);
+        //设置定位监听器
+        LocationListenerManager locationListenerManager = LocationListenerManager.getLocationListenerManagerInstance();
+        mLocationClient.registerLocationListener(locationListenerManager);
+        try{
+            locationListenerManager.registerLocationListner(new SyncUserLocationListener());
 
-        //启动定时任务
+        }catch (Exception e){
+
+        }
+
+        //启动后台定位任务
         MyLocationTask locationTask = new MyLocationTask(mLocationClient);
         Timer timer = new Timer();
         timer.schedule(locationTask, 10000);
