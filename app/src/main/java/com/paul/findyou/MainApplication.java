@@ -40,7 +40,12 @@ public class MainApplication extends Application {
         ApplicationContext.setLocationClient(mLocationClient);
 
 
-        MyLocationService.initLocationService();
+        try{
+            MyLocationService.initLocationService();
+
+        }catch(Exception e){
+
+        }
     }
 
     private void test(){

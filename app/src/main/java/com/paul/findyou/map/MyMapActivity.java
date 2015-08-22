@@ -35,10 +35,10 @@ public class MyMapActivity extends Activity {
         public void handleMessage(Message msg){
             BDLocation location = (BDLocation)msg.obj;
             MyLocationData locData = new MyLocationData.Builder()
-                    .accuracy(location.getRadius())
+                    .accuracy(location.getRadius())//
                             // 此处设置开发者获取到的方向信息，顺时针0-360
-                    .direction(100).latitude(location.getLatitude())
-                    .longitude(location.getLongitude()).build();
+                    .direction(100).latitude(location.getLatitude())//
+                    .longitude(location.getLongitude()).build();//
             mBaiduMap.setMyLocationData(locData);
 
             if (isFirstLoc) {

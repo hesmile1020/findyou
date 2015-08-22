@@ -10,13 +10,18 @@ import java.util.TimerTask;
  */
 public class MyLocationTask extends TimerTask {
     private LocationClient mLocationClient;
+    // «∑Ò‘›Õ£
+    private boolean pauseLocation;
 
     public MyLocationTask(LocationClient mLocationClient){
        this.mLocationClient = mLocationClient;
+       pauseLocation = false;
     }
 
     @Override
     public void run() {
-        mLocationClient.start();
+        if(!pauseLocation){
+            mLocationClient.start();
+        }
     }
 }

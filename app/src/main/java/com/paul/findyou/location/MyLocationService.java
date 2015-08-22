@@ -9,7 +9,14 @@ import java.util.Timer;
  * Created by me on 2015/8/7.
  */
 public class MyLocationService {
-    public static void initLocationService(){
+    /**是否已经初始化*/
+    private static boolean isInit = false;
+
+    public static void initLocationService() throws Exception {
+        if(isInit){
+            throw new Exception("my location service has been inited!");
+        }
+
         LocationClient mLocationClient = ApplicationContext.getLocationClient();
 
         //设置定位监听器
@@ -25,6 +32,8 @@ public class MyLocationService {
         //启动后台定位任务
         MyLocationTask locationTask = new MyLocationTask(mLocationClient);
         Timer timer = new Timer();
-        timer.schedule(locationTask, 10000);
+        timer.schedule(locationTask, 0, 20000);
+
+        isInit = true;
     }
 }
