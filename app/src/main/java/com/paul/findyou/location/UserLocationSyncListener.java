@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * Created by me on 2015/8/15.
  */
-public class SyncUserLocationListener implements ALocationListener{
+public class UserLocationSyncListener implements ALocationListener{
     @Override
     public void handleLocationReceived(BDLocation location){
         Map<String,String> params = buildPostParams(location);

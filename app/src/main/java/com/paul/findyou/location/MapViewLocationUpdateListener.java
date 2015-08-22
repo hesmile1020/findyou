@@ -8,10 +8,10 @@ import com.baidu.location.BDLocation;
 /**
  * Created by me on 2015/8/15.
  */
-public class UpdateMapViewLocationListener implements ALocationListener{
+public class MapViewLocationUpdateListener implements ALocationListener{
     private Handler locationMessageHandler;
 
-    public UpdateMapViewLocationListener(Handler locationMessageHandler){
+    public MapViewLocationUpdateListener(Handler locationMessageHandler){
         this.locationMessageHandler = locationMessageHandler;
     }
     @Override

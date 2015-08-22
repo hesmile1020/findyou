@@ -3,10 +3,8 @@ package com.paul.findyou.map;
 import android.app.Activity;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuItem;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
@@ -18,7 +16,7 @@ import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
 import com.paul.findyou.R;
 import com.paul.findyou.location.LocationListenerManager;
-import com.paul.findyou.location.UpdateMapViewLocationListener;
+import com.paul.findyou.location.MapViewLocationUpdateListener;
 
 public class MyMapActivity extends Activity {
     // 定位相关
@@ -62,7 +60,7 @@ public class MyMapActivity extends Activity {
         mBaiduMap.setMyLocationEnabled(true);
 
         try{
-            UpdateMapViewLocationListener listener = new UpdateMapViewLocationListener(viewUpdateHandler);
+            MapViewLocationUpdateListener listener = new MapViewLocationUpdateListener(viewUpdateHandler);
             LocationListenerManager.registerLocationListner(listener);
 
         }catch (Exception e){

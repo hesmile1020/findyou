@@ -23,7 +23,7 @@ public class MyLocationService {
         LocationListenerManager locationListenerManager = LocationListenerManager.getLocationListenerManagerInstance();
         mLocationClient.registerLocationListener(locationListenerManager);
         try{
-            locationListenerManager.registerLocationListner(new SyncUserLocationListener());
+            locationListenerManager.registerLocationListner(new UserLocationSyncListener());
 
         }catch (Exception e){
 
