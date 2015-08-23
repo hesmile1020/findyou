@@ -1,6 +1,8 @@
 package com.paul.findyou;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
@@ -8,7 +10,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.baidu.location.LocationClient;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapView;
 import com.paul.findyou.location.LocationListenerManager;
@@ -18,7 +19,6 @@ import com.paul.findyou.map.MyMapActivity;
 
 
 public class MainActivity extends ActionBarActivity {
-    LocationClient mLocClient;// 定位客户端
     MapView mMapView;
     BaiduMap mBaiduMap;
     Handler viewUpdateHandler;//地图更新处理器
@@ -31,13 +31,20 @@ public class MainActivity extends ActionBarActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.show();
 
+
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.argb(0xff, 0xcc, 0x99, 0x33)));
+//        TextView title = (TextView) findViewById(android.R.id.title);
+//        title.setGravity(Gravity.CENTER);
+
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.actionbar);
+
         mMapView = (MapView) findViewById(R.id.bmapView);
         mMapView.showZoomControls(false);
         mBaiduMap = mMapView.getMap();
         mBaiduMap.setMyLocationEnabled(true);
 
         try {
-            // 设置
             viewUpdateHandler = new MapViewUpdateHandler(mBaiduMap);
             MapViewLocationUpdateListener listener = new MapViewLocationUpdateListener(viewUpdateHandler);
             LocationListenerManager.registerLocationListner(listener);
@@ -84,8 +91,7 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     protected void onDestroy() {
-        // 停止定位
-        mLocClient.stop();
+        //mLocClient.stop();
         mBaiduMap.setMyLocationEnabled(false);
         mMapView.onDestroy();
         mMapView = null;

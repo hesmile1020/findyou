@@ -19,22 +19,21 @@ import com.paul.findyou.location.LocationListenerManager;
 import com.paul.findyou.location.MapViewLocationUpdateListener;
 
 public class MyMapActivity extends Activity {
-    // ¶¨Î»Ïà¹Ø
+    // ï¿½ï¿½Î»ï¿½ï¿½ï¿½
     LocationClient mLocClient;
 
     MapView mMapView;
     BaiduMap mBaiduMap;
 
-    boolean isFirstLoc = true;// ÊÇ·ñÊ×´Î¶¨Î»
+    boolean isFirstLoc = true;// ï¿½Ç·ï¿½ï¿½×´Î¶ï¿½Î»
 
-    //µ±Ç°Î»ÖÃ¸üÐÂ´¦ÀíÆ÷
+    //ï¿½ï¿½Ç°Î»ï¿½Ã¸ï¿½ï¿½Â´ï¿½ï¿½ï¿½ï¿½ï¿½
     Handler viewUpdateHandler = new Handler(){
         @Override
         public void handleMessage(Message msg){
             BDLocation location = (BDLocation)msg.obj;
             MyLocationData locData = new MyLocationData.Builder()
                     .accuracy(location.getRadius())//
-                            // ´Ë´¦ÉèÖÃ¿ª·¢Õß»ñÈ¡µ½µÄ·½ÏòÐÅÏ¢£¬Ë³Ê±Õë0-360
                     .direction(100).latitude(location.getLatitude())//
                     .longitude(location.getLongitude()).build();//
             mBaiduMap.setMyLocationData(locData);
@@ -56,7 +55,7 @@ public class MyMapActivity extends Activity {
 
         mMapView = (MapView) findViewById(R.id.bmapView);
         mBaiduMap = mMapView.getMap();
-        // ¿ªÆô¶¨Î»Í¼²ã
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»Í¼ï¿½ï¿½
         mBaiduMap.setMyLocationEnabled(true);
 
         try{
@@ -89,9 +88,9 @@ public class MyMapActivity extends Activity {
 
     @Override
     protected void onDestroy() {
-        // ÍË³öÊ±Ïú»Ù¶¨Î»
-        mLocClient.stop();
-        // ¹Ø±Õ¶¨Î»Í¼²ã
+        // ï¿½Ë³ï¿½Ê±ï¿½ï¿½Ù¶ï¿½Î»
+        //mLocClient.stop();
+        // ï¿½Ø±Õ¶ï¿½Î»Í¼ï¿½ï¿½
         mBaiduMap.setMyLocationEnabled(false);
         mMapView.onDestroy();
         mMapView = null;
