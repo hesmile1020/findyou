@@ -1,28 +1,34 @@
 package com.paul.findyou.location;
 
+import android.content.Context;
 import android.os.Message;
 
 import com.baidu.location.BDLocation;
 import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.InfoWindow;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
+import com.paul.findyou.R;
 
 import android.os.Handler;
+import android.widget.Button;
 
 /**
- * ��ͼ���´�����
+ * 地图更新器
  * Created by me on 2015/8/23.
  */
 public class MapViewUpdateHandler extends Handler {
-    //�ٶȵ�ͼ
+    private Context applicatioNContext;
+    //百度地图
     private BaiduMap mBaiduMap;
-    //�Ƿ��һ�ζ�λ
+    //是否第一次定位
     private boolean isFirstLoc;
 
-    public MapViewUpdateHandler(BaiduMap mBaiduMap) {
+    public MapViewUpdateHandler(Context applicatioNContext, BaiduMap mBaiduMap) {
+        this.applicatioNContext = applicatioNContext;
         this.mBaiduMap = mBaiduMap;
         this.isFirstLoc = true;
     }
@@ -45,6 +51,15 @@ public class MapViewUpdateHandler extends Handler {
             MapStatusUpdate mapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mapStatus);
 
             mBaiduMap.animateMapStatus(mapStatusUpdate);
+
+            Button button = new Button(applicatioNContext);
+            //button.setBackgroundResource(R.drawable.popup);
+            button.setText("hello");
+            //定义用于显示该InfoWindow的坐标点
+            //创建InfoWindow , 传入 view， 地理坐标， y 轴偏移量
+            InfoWindow mInfoWindow = new InfoWindow(button, latLng, -47);
+            //显示InfoWindow
+            mBaiduMap.showInfoWindow(mInfoWindow);
         }
     }
 }

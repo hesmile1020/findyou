@@ -31,7 +31,6 @@ public class MainActivity extends ActionBarActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.show();
 
-
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.argb(0xff, 0xcc, 0x99, 0x33)));
 //        TextView title = (TextView) findViewById(android.R.id.title);
 //        title.setGravity(Gravity.CENTER);
@@ -45,7 +44,7 @@ public class MainActivity extends ActionBarActivity {
         mBaiduMap.setMyLocationEnabled(true);
 
         try {
-            viewUpdateHandler = new MapViewUpdateHandler(mBaiduMap);
+            viewUpdateHandler = new MapViewUpdateHandler(getApplicationContext(), mBaiduMap);
             MapViewLocationUpdateListener listener = new MapViewLocationUpdateListener(viewUpdateHandler);
             LocationListenerManager.registerLocationListner(listener);
 
