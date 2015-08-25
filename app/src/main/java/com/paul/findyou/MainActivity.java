@@ -1,14 +1,20 @@
 package com.paul.findyou;
 
+import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapView;
@@ -18,7 +24,12 @@ import com.paul.findyou.location.MapViewUpdateHandler;
 import com.paul.findyou.map.MyMapActivity;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
+    private DrawerLayout mDrawerLayout;
+    private ListView mDrawerList;
+    private String[] mMenuTitles;
+    private ActionBarDrawerToggle mDrawerToggle;
+
     MapView mMapView;
     BaiduMap mBaiduMap;
     Handler viewUpdateHandler;//地图更新处理器
@@ -27,16 +38,46 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ActionBar actionBar = getActionBar();
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.show();
+        //-------------------------抽屉相关
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
-        actionBar.setBackgroundDrawable(new ColorDrawable(Color.argb(0xff, 0xcc, 0x99, 0x33)));
-//        TextView title = (TextView) findViewById(android.R.id.title);
-//        title.setGravity(Gravity.CENTER);
+        mMenuTitles = getResources().getStringArray(R.array.menu_array);
+        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
+                R.layout.drawer_list_item, mMenuTitles));
 
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.actionbar);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
+
+        mDrawerToggle = new ActionBarDrawerToggle(
+                this,                  /* host Activity */
+                mDrawerLayout,         /* DrawerLayout object */
+                R.drawable.ic_drawer,  /* nav drawer image to replace 'Up' caret */
+                R.string.drawer_open,  /* "open drawer" description for accessibility */
+                R.string.drawer_close  /* "close drawer" description for accessibility */
+        ) {
+            public void onDrawerClosed(View view) {
+                getActionBar().setTitle("test");
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+
+            public void onDrawerOpened(View drawerView) {
+                getActionBar().setTitle("test");
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+        };
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+        //-------------------------地图相关
+        //getActionBar().show();
+      //  actionBar.setBackgroundDrawable(new ColorDrawable(Color.argb(0xff, 0xcc, 0x99, 0x33)));
+//      TextView title = (TextView) findViewById(android.R.id.title);
+//      title.setGravity(Gravity.CENTER);
+//        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+//        actionBar.setCustomView(R.layout.actionbar);
 
         mMapView = (MapView) findViewById(R.id.bmapView);
         mMapView.showZoomControls(false);
@@ -50,6 +91,11 @@ public class MainActivity extends ActionBarActivity {
 
         } catch (Exception e) {
             //TODO
+        }
+
+        //TODO
+        if (savedInstanceState == null) {
+            //selectItem(0);
         }
     }
 
@@ -78,22 +124,23 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     protected void onPause() {
-        mMapView.onPause();
+        //mMapView.onPause();
         super.onPause();
     }
 
     @Override
     protected void onResume() {
-        mMapView.onResume();
+        //mMapView.onResume();
         super.onResume();
     }
 
     @Override
     protected void onDestroy() {
         //mLocClient.stop();
-        mBaiduMap.setMyLocationEnabled(false);
-        mMapView.onDestroy();
-        mMapView = null;
+
+//        mBaiduMap.setMyLocationEnabled(false);
+//        mMapView.onDestroy();
+//        mMapView = null;
         super.onDestroy();
     }
 }

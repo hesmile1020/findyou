@@ -54,6 +54,7 @@ public class MapViewUpdateHandler extends Handler {
 
             Button button = new Button(applicatioNContext);
             //button.setBackgroundResource(R.drawable.popup);
+            //TODO
             button.setText("hello");
             //定义用于显示该InfoWindow的坐标点
             //创建InfoWindow , 传入 view， 地理坐标， y 轴偏移量
