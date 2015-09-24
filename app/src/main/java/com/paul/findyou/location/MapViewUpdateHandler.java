@@ -11,31 +11,36 @@ import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
+import com.paul.findyou.ApplicationContext;
 import com.paul.findyou.R;
 
 import android.os.Handler;
 import android.widget.Button;
+import android.widget.ImageButton;
+
+import java.util.Random;
 
 /**
  * 地图更新器
  * Created by me on 2015/8/23.
  */
 public class MapViewUpdateHandler extends Handler {
-    private Context applicatioNContext;
     //百度地图
     private BaiduMap mBaiduMap;
     //是否第一次定位
     private boolean isFirstLoc;
+    private int count;
 
-    public MapViewUpdateHandler(Context applicatioNContext, BaiduMap mBaiduMap) {
-        this.applicatioNContext = applicatioNContext;
+    public MapViewUpdateHandler(BaiduMap mBaiduMap) {
         this.mBaiduMap = mBaiduMap;
         this.isFirstLoc = true;
+        this.count = 0;
     }
 
     @Override
     public void handleMessage(Message msg) {
         BDLocation location = (BDLocation) msg.obj;
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         MyLocationData locData = new MyLocationData.Builder()
                 .accuracy(location.getRadius())//
                 .direction(100).latitude(location.getLatitude())//
@@ -46,21 +51,29 @@ public class MapViewUpdateHandler extends Handler {
             isFirstLoc = false;
 
             MapStatus.Builder mapStatusBuilder = new MapStatus.Builder();
-            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
             MapStatus mapStatus = mapStatusBuilder.zoom(16f).target(latLng).build();
             MapStatusUpdate mapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mapStatus);
 
             mBaiduMap.animateMapStatus(mapStatusUpdate);
-
-            Button button = new Button(applicatioNContext);
-            //button.setBackgroundResource(R.drawable.popup);
-            //TODO
-            button.setText("hello");
-            //定义用于显示该InfoWindow的坐标点
-            //创建InfoWindow , 传入 view， 地理坐标， y 轴偏移量
-            InfoWindow mInfoWindow = new InfoWindow(button, latLng, -47);
-            //显示InfoWindow
-            mBaiduMap.showInfoWindow(mInfoWindow);
         }
+
+        mBaiduMap.clear();
+
+        ImageButton button = new ImageButton(ApplicationContext.getApplicationContext());
+        button.setBackgroundResource(R.drawable.icon_mark);
+        button.setImageResource(R.drawable.icon_mark);
+        button.getRootView().setRotation(90);
+        //button.setBackgroundResource(R.drawable.popup);
+        Button button1 = new Button(ApplicationContext.getApplicationContext());
+        button1.setText("定位："+count);
+
+        //button.setText("定位："+count);
+        //定义用于显示该InfoWindow的坐标点
+        //创建InfoWindow , 传入 view， 地理坐标， y 轴偏移量
+        InfoWindow mInfoWindow = new InfoWindow(button, latLng, -47);
+        //显示InfoWindow
+        mBaiduMap.showInfoWindow(mInfoWindow);
+
+        count++;
     }
 }

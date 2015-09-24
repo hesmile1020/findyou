@@ -1,14 +1,14 @@
 package com.paul.findyou;
 
 /**
- * App常量定义
+ * App鍏ㄥ眬瀹氫箟
  * Created by me on 2015/8/13.
  */
 public class AppDefine {
-    //server 主机地址
+    //server鍦板潃
     public static final String URL_HOST = "";
-    //上传当前位置
+    //鍚屾褰撳墠浣嶇疆
     public static final String URL_POST_CURRNET_LOCATION = URL_HOST+"";
-    //获取附近人
+    //鑾峰彇闄勮繎鐨勪汉
     public static final String URL_GET_NEAR_PERSON = URL_HOST+"";
 }

@@ -1,11 +1,17 @@
 package com.paul.mode.util;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.OutputStreamWriter;
+
 /**
  * Created by me on 2015/8/14.
  */
 public class Util {
     /**
-     * ¹¦ÄÜÃèÊö:byteÊý×éºÏ²¢
+     * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:byteï¿½ï¿½ï¿½ï¿½Ï²ï¿½
      *
      * @param byteOne
      * @param byteTwo
@@ -26,5 +32,18 @@ public class Util {
         System.arraycopy(byteTwo, 0, result, byteOne.length, byteTwo.length);
 
         return result;
+    }
+
+    public static void writeLineToFile(File file, String text)throws  Exception{
+        if(!file.exists()){
+            file.createNewFile();
+        }
+
+        FileWriter fileWritter = new FileWriter(file.getName(),true);
+        BufferedWriter writer = new BufferedWriter(fileWritter);
+
+        writer.newLine();
+        writer.write(text);
+        writer.close();
     }
 }

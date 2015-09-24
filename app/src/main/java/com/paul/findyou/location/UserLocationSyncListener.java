@@ -1,10 +1,20 @@
 package com.paul.findyou.location;
 
+import android.content.Context;
+import android.os.Environment;
+
 import com.baidu.location.BDLocation;
 import com.paul.findyou.AppDefine;
+import com.paul.findyou.ApplicationContext;
 import com.paul.mode.http.HttpRequestService;
 import com.paul.mode.http.ProtocalWrap;
+import com.paul.mode.util.Util;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.OutputStreamWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,8 +35,16 @@ public class UserLocationSyncListener implements ALocationListener{
         try{
             //httpRequestService.doService();
 
-        }catch (Exception e){
+            FileOutputStream fos = ApplicationContext.getApplicationContext().openFileOutput("locationdata", Context.MODE_APPEND);
+            OutputStreamWriter fosWritter = new OutputStreamWriter(fos);
+            BufferedWriter bufferedWriter = new BufferedWriter(fosWritter);
 
+            bufferedWriter.newLine();
+            bufferedWriter.write(params.toString());
+            bufferedWriter.close();
+
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 

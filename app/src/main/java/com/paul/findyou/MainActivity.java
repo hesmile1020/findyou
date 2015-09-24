@@ -85,7 +85,7 @@ public class MainActivity extends Activity {
         mBaiduMap.setMyLocationEnabled(true);
 
         try {
-            viewUpdateHandler = new MapViewUpdateHandler(getApplicationContext(), mBaiduMap);
+            viewUpdateHandler = new MapViewUpdateHandler(mBaiduMap);
             MapViewLocationUpdateListener listener = new MapViewLocationUpdateListener(viewUpdateHandler);
             LocationListenerManager.registerLocationListner(listener);
 

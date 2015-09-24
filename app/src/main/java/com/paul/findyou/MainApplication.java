@@ -4,13 +4,16 @@ import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
-import android.os.Trace;
+import android.graphics.Path;
+import android.os.Environment;
 import android.util.Log;
 
 import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.SDKInitializer;
 import com.paul.findyou.location.MyLocationService;
+
+import java.io.File;
+import java.util.Random;
 
 
 /**
@@ -18,37 +21,28 @@ import com.paul.findyou.location.MyLocationService;
  */
 public class MainApplication extends Application {
     public LocationClient mLocationClient;
+
     @Override
     public void onCreate() {
         super.onCreate();
 
         SDKInitializer.initialize(this);
 
-        initLocationService();
+        try {
+            MyLocationService.initLocationService(this.getApplicationContext());
 
-        test();
-    }
-
-    private void initLocationService(){
-        mLocationClient = new LocationClient(this.getApplicationContext());
-        LocationClientOption option = new LocationClientOption();
-        option.setOpenGps(true);// 打开gps
-        option.setCoorType("bd09ll"); // 设置坐标类型
-        //option.setScanSpan(1000);
-        mLocationClient.setLocOption(option);
-
-        ApplicationContext.setLocationClient(mLocationClient);
-
-
-        try{
-            MyLocationService.initLocationService();
-
-        }catch(Exception e){
-
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(0);
         }
+
+        ApplicationContext.setApplicationContext(this.getApplicationContext());
+        int i =new Random().nextInt(100);
+        int j = new Random().nextInt(100);
+        //test1();
     }
 
-    private void test(){
+    private void test() {
         Context context = this.getApplicationContext();
 
         String pname = context.getPackageName();
@@ -56,7 +50,7 @@ public class MainApplication extends Application {
             Signature[] sigs = getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNATURES).signatures;
             for (Signature sig : sigs) {
                 System.out.println(sig);
-                String sign = new String(sig.toByteArray(),"GBK");
+                String sign = new String(sig.toByteArray(), "GBK");
                 //Trace.i("MyApp", "Signature hashcode : " + sig.hashCode());
                 String str1 = sig.toCharsString();
                 String str2 = sig.toString();
@@ -65,8 +59,35 @@ public class MainApplication extends Application {
                 Log.i("sign", sign);
             }
 
-        }catch (Exception e){
-            e.printStackTrace();;
+        } catch (Exception e) {
+            e.printStackTrace();
+            ;
         }
+    }
+
+    public boolean test1() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            File rootDir = Environment.getExternalStorageDirectory();
+
+            String path =  getApplicationContext().getFilesDir().getPath();
+            System.out.println(path);
+            File f = new File(path);
+            try{
+                f.createNewFile();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+            File file1 = new File(rootDir, "findyou");
+            try {
+
+                file1.deleteOnExit();
+                file1.mkdir();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return true;
+        }
+        return false;
     }
 }
