@@ -5,11 +5,16 @@ import android.os.Message;
 
 import com.baidu.location.BDLocation;
 import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.BitmapDescriptor;
+import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.InfoWindow;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
+import com.baidu.mapapi.map.Marker;
+import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.paul.findyou.ApplicationContext;
 import com.paul.findyou.R;
@@ -65,14 +70,22 @@ public class MapViewUpdateHandler extends Handler {
         button.getRootView().setRotation(90);
         //button.setBackgroundResource(R.drawable.popup);
         Button button1 = new Button(ApplicationContext.getApplicationContext());
-        button1.setText("定位："+count);
+        button1.setText("定位：" + count);
+
+        BitmapDescriptor bdA = BitmapDescriptorFactory
+                .fromResource(R.drawable.sto);
+        OverlayOptions ooA = new MarkerOptions().position(latLng).icon(bdA)
+                .zIndex(9).draggable(true);
+        Marker marker = (Marker) (mBaiduMap.addOverlay(ooA));
+        marker.setRotate(90);
+
 
         //button.setText("定位："+count);
         //定义用于显示该InfoWindow的坐标点
         //创建InfoWindow , 传入 view， 地理坐标， y 轴偏移量
         InfoWindow mInfoWindow = new InfoWindow(button, latLng, -47);
         //显示InfoWindow
-        mBaiduMap.showInfoWindow(mInfoWindow);
+        //mBaiduMap.showInfoWindow(mInfoWindow);
 
         count++;
     }
