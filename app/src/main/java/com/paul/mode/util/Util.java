@@ -11,7 +11,6 @@ import java.io.OutputStreamWriter;
  */
 public class Util {
     /**
-     * ��������:byte����ϲ�
      *
      * @param byteOne
      * @param byteTwo

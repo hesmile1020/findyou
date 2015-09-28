@@ -4,28 +4,24 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapView;
 import com.paul.findyou.location.LocationListenerManager;
 import com.paul.findyou.location.MapViewLocationUpdateListener;
 import com.paul.findyou.location.MapViewUpdateHandler;
-import com.paul.findyou.map.MyMapActivity;
+import com.paul.findyou.ui.user.LoginActivity;
 
 
 public class MainActivity extends Activity {
@@ -33,6 +29,8 @@ public class MainActivity extends Activity {
     private ListView mDrawerList;
     private String[] mMenuTitles;
     private ActionBarDrawerToggle mDrawerToggle;
+    private CharSequence mDrawerTitle;
+    private CharSequence mTitle;
 
     MapView mMapView;
     BaiduMap mBaiduMap;
@@ -42,9 +40,9 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ActionBar actionBar = getActionBar();
 
         //-------------------------抽屉相关
+        mTitle = mDrawerTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
@@ -52,6 +50,7 @@ public class MainActivity extends Activity {
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         mDrawerList.setAdapter(new ArrayAdapter<String>(this,
                 R.layout.drawer_list_item, mMenuTitles));
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
@@ -64,12 +63,12 @@ public class MainActivity extends Activity {
                 R.string.drawer_close  /* "close drawer" description for accessibility */
         ) {
             public void onDrawerClosed(View view) {
-                getActionBar().setTitle("test");
+                getActionBar().setTitle(mTitle);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
 
             public void onDrawerOpened(View drawerView) {
-                getActionBar().setTitle("test");
+                getActionBar().setTitle(mDrawerTitle);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
@@ -103,21 +102,21 @@ public class MainActivity extends Activity {
     }
 
     /**
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.mapItem) {
-            Intent intent = new Intent(this, MyMapActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-            return true;
-
-        } else if (id == R.id.settingsItem) {
-
-        }
-
-        return super.onOptionsItemSelected(item);
-    }*/
+     * @Override public boolean onOptionsItemSelected(MenuItem item) {
+     * int id = item.getItemId();
+     * if (id == R.id.mapItem) {
+     * Intent intent = new Intent(this, MyMapActivity.class);
+     * intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+     * startActivity(intent);
+     * return true;
+     * <p/>
+     * } else if (id == R.id.settingsItem) {
+     * <p/>
+     * }
+     * <p/>
+     * return super.onOptionsItemSelected(item);
+     * }
+     */
 
     @Override
     protected void onPause() {
@@ -164,21 +163,21 @@ public class MainActivity extends Activity {
             return true;
         }
         // Handle action buttons
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             /**
-            case R.id.action_websearch:
-                // create intent to perform web search for this planet
-                Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
-                intent.putExtra(SearchManager.QUERY, getActionBar().getTitle());
-                // catch event that there's no activity to handle intent
-                if (intent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(this, R.string.app_not_available, Toast.LENGTH_LONG).show();
-                }
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+             case R.id.action_websearch:
+             // create intent to perform web search for this planet
+             Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+             intent.putExtra(SearchManager.QUERY, getActionBar().getTitle());
+             // catch event that there's no activity to handle intent
+             if (intent.resolveActivity(getPackageManager()) != null) {
+             startActivity(intent);
+             } else {
+             Toast.makeText(this, R.string.app_not_available, Toast.LENGTH_LONG).show();
+             }
+             return true;
+             default:
+             return super.onOptionsItemSelected(item);
              */
         }
         return true;
@@ -188,8 +187,38 @@ public class MainActivity extends Activity {
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            //selectItem(position);
+             selectItem(position);
         }
+
+        /**
+         * Swaps fragments in the main content view
+         */
+        private void selectItem(int position) {
+            // Highlight the selected item, update the title, and close the drawer
+            mDrawerList.setItemChecked(position, true);
+            setTitle(mMenuTitles[position]);
+            mDrawerLayout.closeDrawer(mDrawerList);
+
+            try {
+                switch (position) {
+                    case 0:
+                        Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(i);
+                        break;
+                    case 1:
+                        break;
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        mTitle = title;
+        getActionBar().setTitle(mTitle);
     }
 
     @Override
@@ -206,3 +235,4 @@ public class MainActivity extends Activity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 }
+

@@ -7,29 +7,20 @@ import java.util.Map;
  * Created by me on 2015/8/14.
  */
 public class ProtocalWrap {
-    // ------------------------------- 数据请求/接收 协议
-    // http请求的默认值
     public static final String ARG_H_ENCODING_GZIP = "gzip";
 
-    // http请求的KEY
     public static final String H_POST_COMPRESS = "Accept-Encoding";
 
-    // http返回的KEY
     public static final String H_RESPONSE_COMPRESS = "Content-Encoding";
 
-    // 最小post 数据是启动压缩
     public static final int COMPRESSION_MIN_SIZE = 2048;
 
-    // header 数据部分
     private Map<String, String> headerValues;
 
-    // 处理好的参数数据： qt=xx&qid=xx
     private Map<String, String> getData;
 
-    // post数据部分
     private byte[] postData;
 
-    // 头部数据(非必须设置字段,一般用于post数据结构说明)
     private byte[] headerData;
 
     // params
@@ -43,41 +34,26 @@ public class ProtocalWrap {
         this.params = params;
     }
 
-    // ------------------------------ 重定向协议
     public static final String H_RESPONSE_LOCATION = "Location";
 
-    // ------------------------------ 连接池
-    // 连接池里的最大连接数
     public static final int MAX_TOTAL_CONNECTIONS = 2;
 
-    // 每个路由的默认最大连接数
     public static final int MAX_ROUTE_CONNECTIONS = 5;
 
-    // 连接池超时时间
     public static final long DEFAULT_CONNMANAGER_TIMEOUT = 15000;
 
     // ----------------------------- HttpClient
-    // 默认读取超时时间
     public static final int DEFAULT_SO_TIMEOUT = 15000;
 
-    // 默认连接超时时间
     public static final int DEFAULT_CONNECT_TIMEOUT = 15000;
 
-    // 连接主机，如同这个值没有设置将使用默认的主机
     private String host;
-    // 连接超时
     private int connectTimeout = DEFAULT_CONNECT_TIMEOUT;
-    // 读取超时(负数的时候不起作用)
     private int soTimeout = DEFAULT_SO_TIMEOUT;
-    // 连接池阻塞时间
     private long connectionManagerTimeout = DEFAULT_CONNMANAGER_TIMEOUT;
-    // 是否启动连接重试机制，默认是重试的。
     private boolean reTry = true;
-    // 是否可以压缩post数据
     private boolean canCompressPost = true;
-    // 是否自动重定向
     private boolean redir = false;
-    // 重试次数
     private int retryCount;
 
     /**

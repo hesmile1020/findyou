@@ -6,6 +6,7 @@ import android.os.Environment;
 import com.baidu.location.BDLocation;
 import com.paul.findyou.AppDefine;
 import com.paul.findyou.ApplicationContext;
+import com.paul.findyou.net.LocationRequest;
 import com.paul.mode.http.HttpRequestService;
 import com.paul.mode.http.ProtocalWrap;
 import com.paul.mode.util.Util;
@@ -26,26 +27,25 @@ public class UserLocationSyncListener implements ALocationListener{
     public void handleLocationReceived(BDLocation location){
         Map<String,String> params = buildPostParams(location);
 
-        ProtocalWrap protocalWrap = new ProtocalWrap();
-        protocalWrap.setHost(AppDefine.URL_POST_CURRNET_LOCATION);
-        protocalWrap.setParams(params);
-
-        HttpRequestService httpRequestService = new HttpRequestService(protocalWrap);
-
         try{
-            //httpRequestService.doService();
+            LocationRequest locationRequest = new LocationRequest();
+            locationRequest.postCurrentLocation(params);
 
-            FileOutputStream fos = ApplicationContext.getApplicationContext().openFileOutput("locationdata", Context.MODE_APPEND);
-            OutputStreamWriter fosWritter = new OutputStreamWriter(fos);
-            BufferedWriter bufferedWriter = new BufferedWriter(fosWritter);
-
-            bufferedWriter.newLine();
-            bufferedWriter.write(params.toString());
-            bufferedWriter.close();
+            saveLocationLocally(params);
 
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    private void saveLocationLocally(Map<String,String> params) throws  Exception{
+        FileOutputStream fos = ApplicationContext.getApplicationContext().openFileOutput("locationdata", Context.MODE_APPEND);
+        OutputStreamWriter fosWritter = new OutputStreamWriter(fos);
+        BufferedWriter bufferedWriter = new BufferedWriter(fosWritter);
+
+        bufferedWriter.newLine();
+        bufferedWriter.write(params.toString());
+        bufferedWriter.close();
     }
 
     @Override

@@ -32,7 +32,6 @@ import java.util.zip.GZIPOutputStream;
  */
 @SuppressWarnings("deprecation")
 public class HttpRequestService {
-    // ClientÐ­Òé
     private ProtocalWrap protocal;
 
     public HttpRequestService(ProtocalWrap protocal) {
@@ -45,16 +44,13 @@ public class HttpRequestService {
         try {
             httpClient = new DefaultHttpClient();
 
-            // ÉèÖÃÖØÊÔ´ÎÊý
             if (protocal.getRetryCount() > 0) {
                 httpClient.setHttpRequestRetryHandler(new DefaultHttpRequestRetryHandler(protocal.getRetryCount(),
                         false));
             }
 
-            // ´´½¨ÇëÇó
             HttpRequestBase httpRequest = createRequest();
 
-            // Ö´ÐÐÍøÂçÇëÇó
             result = execute(httpClient, httpRequest);
 
         }catch (Exception e) {
@@ -70,21 +66,18 @@ public class HttpRequestService {
     }
 
     /**
-     * ´´½¨get »òÕß postÇëÇó·½Ê½
      *
      * @throws java.io.UnsupportedEncodingException
      *
      */
     private HttpRequestBase createRequest() throws UnsupportedEncodingException {
         HttpRequestBase httpRequest = null;
-        // postÊý¾Ý²¿·Ö
         if (protocal.getPostData() != null) {
             httpRequest = new HttpPost(protocal.getHost());
             byte[] sendData = protocal.getPostData();
 
-            // Èç¹ûÑ¹Ëõ²»³É¹¦Ê¹ÓÃÄ¬ÈÏ£¬Èç¹û³É¹¦ÉèÖÃpost zipÑ¹Ëõ±êÖ¾
             if (protocal.isCanCompressPost() && sendData.length > protocal.COMPRESSION_MIN_SIZE) {
-                // postÊý¾ÝÑ¹Ëõ
+                // postï¿½ï¿½ï¿½Ñ¹ï¿½ï¿½
                 sendData = gzipWrapPostData(sendData);
                 if (sendData == null) {
                     sendData = protocal.getPostData();
@@ -94,7 +87,7 @@ public class HttpRequestService {
                 }
             }
 
-            // »ñÈ¡Êý¾Ý°üÍ·ÐÅÏ¢
+            // ï¿½ï¿½È¡ï¿½ï¿½Ý°ï¿½Í·ï¿½ï¿½Ï¢
             byte[] headerData = protocal.getHeaderData();
             if (headerData != null) {
                 sendData = Util.byteMerge(headerData, sendData);
@@ -124,11 +117,9 @@ public class HttpRequestService {
 
     protected  byte[] execute(DefaultHttpClient httpClient, HttpRequestBase httpRequest) throws Exception{
         byte[] result = null;
-        // Ö´ÐÐ
         HttpResponse httpResponse = httpClient.execute(httpRequest);
         int httpCode = httpResponse.getStatusLine().getStatusCode();
         if (httpCode == HttpURLConnection.HTTP_OK) {
-            // ´¦Àí½á¹û£¬ÊÇ·ñÊý¾ÝÓÐÑ¹Ëõ
             Header compressHeader = httpResponse.getFirstHeader(ProtocalWrap.H_RESPONSE_COMPRESS);
             if (compressHeader != null && compressHeader.getValue().equals(ProtocalWrap.ARG_H_ENCODING_GZIP)) {
                 result = handleReponse(httpResponse, true);
@@ -139,14 +130,13 @@ public class HttpRequestService {
             }
 
         } else {
-            throw new Exception("·µ»ØÁË·Ç¹æ¶¨µÄÍøÂç×´Ì¬Âë£º" + httpCode);
+            throw new Exception("è¯·æ±‚å¤±è´¥ï¼š" + httpCode);
 
         }
 
         return result;
     }
 
-    // ´¦ÀíÏìÓ¦
     protected byte[] handleReponse(HttpResponse response, boolean gzip) throws IOException {
         InputStream is = null;
         HttpEntity entity = response.getEntity();
@@ -167,7 +157,6 @@ public class HttpRequestService {
         return bab.toByteArray();
     }
 
-    // Ñ¹Ëõpost Êý¾Ý
     private byte[] gzipWrapPostData(byte[] postData) {
         GZIPOutputStream gos = null;
         try {
